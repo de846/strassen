@@ -12,8 +12,8 @@ def create_matrix(m):
 def split_matrix(m):
     """Function to split the matrix into 4 equal quarters"""
 
-    row_len = int(len(m[0][:]))
-    col_len = int(len(m[:][0]))
+    row_len = len(m[0][:])
+    col_len = len(m[:][0])
     if row_len == col_len and row_len % 2 == 0:
         a = [[0 for i in range(row_len/2)] for j in range(col_len/2)]
         b = [[0 for i in range(row_len/2)] for j in range(col_len/2)]
