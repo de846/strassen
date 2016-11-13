@@ -7,15 +7,22 @@ import argparse
 def create_matrix(m):
     """Function to create a random matrix in which values range from 1 to 20"""
 
+    if args.verbose:
+        print("Creating Array with random ints in range from 1 through 20.")
     return [[numpy.random.randint(1,20) for a in range(m)] for t in range(m)]
+
 
 def split_matrix(m):
     """Function to split the matrix into 4 equal quarters"""
+
 
     row_len = len(m[0][:])
     col_len = len(m[:][0])
     half_row_len = row_len // 2
     half_col_len = col_len // 2
+    if args.verbose:
+        print("Splitting a {}x{} matrix {} into quarters.".format(row_len, col_len, id(m)))
+
     if row_len == col_len and row_len % 2 == 0:
         a = [[0 for i in range(half_row_len)] for j in range(half_col_len)]
         b = [[0 for i in range(half_row_len)] for j in range(half_col_len)]
@@ -27,6 +34,8 @@ def split_matrix(m):
                 b[i][j] = m[i][j+half_col_len]
                 c[i][j] = m[i+half_row_len][j]
                 d[i][j] = m[i+half_row_len][j+half_col_len]
+    if args.verbose:
+        print("Produced matrices {}, {}, {}, and {} by splitting.".format(id(a), id(b), id(c), id(d)))
     return a,b,c,d
 
 
@@ -42,6 +51,8 @@ def matrix_add(a,b):
         for i in range(row_len_a):
             for j in range(col_len_a):
                 c[i][j] = a[i][j] + b[i][j]
+    if args.verbose:
+        print("Creating a {}x{} matrix {} by summing matrices {} and {}.".format(row_len_a, col_len_a, id(c), id(a), id(b)))
     return c
 
 def matrix_subtract(a,b):
@@ -56,6 +67,8 @@ def matrix_subtract(a,b):
         for i in range(row_len_a):
             for j in range(col_len_a):
                 c[i][j] = a[i][j] - b[i][j]
+    if args.verbose:
+        print("Creating a {}x{} matrix {} by subtracting matrix {} from {}.".format(row_len_a, col_len_a, id(c), id(b), id(a)))
     return c
 
 def matrix_product(a,b):
@@ -72,6 +85,8 @@ def matrix_product(a,b):
             for k in range(col_len_a):
                 for j in range(col_len_b):
                     c[i][j] += a[i][k]*b[k][j]
+    if args.verbose:
+        print("Creating a {}x{} matrix {} by multiplying matrices {} and {}.".format(row_len_a, col_len_a, id(c), id(b), id(a)))
     return c
 
 def matrix_merge(a,b,c,d):
@@ -104,7 +119,8 @@ def matrix_merge(a,b,c,d):
         for i in range(row_len_d):
             for j in range(col_len_d):
                 result[i+row_len_a][j+col_len_a] = d[i][j]
-
+    if args.verbose:
+        print("Merged four matrices into new matrix {}.".format(id(result)))
     return result
 
 def strassen_solution(a,b):
@@ -118,6 +134,8 @@ def strassen_solution(a,b):
     If condition is true, split the matrix and create the 10 sub matrices
     """
     if row_len_a == col_len_a and row_len_b == col_len_b and col_len_a == row_len_b and row_len_a % 2 == 0:
+        if args.verbose:
+            print("Entering main Strassen algorithm.")
         a11,a12,a21,a22 = split_matrix(a)
         b11,b12,b21,b22 = split_matrix(b)
         s1 = matrix_subtract(b12,b22)
@@ -181,6 +199,8 @@ def strassen_solution(a,b):
         return matrix_merge(c11,c12,c21,c22)
 
     else:
+        if args.verbose:
+            print("Unable to perform Strassen. Performing standard matrix multiplication")
         c = matrix_product(a,b)
         return c
 
@@ -188,6 +208,7 @@ def strassen_solution(a,b):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Strassen Matrix Multiplier")
     parser.add_argument('-s', '--size', help='Size of the matrix', default=4, type=int)
+    parser.add_argument('-v', '--verbose', help='Increase Verbosity', action='store_true')
     args = parser.parse_args()
     size = args.size
 
