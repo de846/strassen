@@ -14,17 +14,19 @@ def split_matrix(m):
 
     row_len = len(m[0][:])
     col_len = len(m[:][0])
+    half_row_len = row_len // 2
+    half_col_len = col_len // 2
     if row_len == col_len and row_len % 2 == 0:
-        a = [[0 for i in range(row_len/2)] for j in range(col_len/2)]
-        b = [[0 for i in range(row_len/2)] for j in range(col_len/2)]
-        c = [[0 for i in range(row_len/2)] for j in range(col_len/2)]
-        d = [[0 for i in range(row_len/2)] for j in range(col_len/2)]
-        for i in range(row_len/2):
-            for j in range(col_len/2):
+        a = [[0 for i in range(half_row_len)] for j in range(half_col_len)]
+        b = [[0 for i in range(half_row_len)] for j in range(half_col_len)]
+        c = [[0 for i in range(half_row_len)] for j in range(half_col_len)]
+        d = [[0 for i in range(half_row_len)] for j in range(half_col_len)]
+        for i in range(half_row_len):
+            for j in range(half_col_len):
                 a[i][j] = m[i][j]
-                b[i][j] = m[i][j+col_len/2]
-                c[i][j] = m[i+row_len/2][j]
-                d[i][j] = m[i+row_len/2][j+col_len/2]
+                b[i][j] = m[i][j+half_col_len]
+                c[i][j] = m[i+half_row_len][j]
+                d[i][j] = m[i+half_row_len][j+half_col_len]
     return a,b,c,d
 
 
@@ -192,12 +194,16 @@ if __name__ == "__main__":
     m1 = create_matrix(size)
     m2 = create_matrix(size)
 
+    print("Matrix 1 ({}x{}):".format(size, size))
     pp.pprint(m1)
+    print("\nMatrix 2 ({}x{}):".format(size, size))
     pp.pprint(m2)
 
-    answer = strassen_solution(m1,m2)
+    strassen_answer = strassen_solution(m1, m2)
+    traditional_answer = matrix_product(m1, m2)
 
-    answer2 = matrix_product(m1,m2)
-
-    pp.pprint(answer)
-    pp.pprint(answer2)
+    print("\nStrassen Product:")
+    pp.pprint(strassen_answer)
+    print("\nTraditional Product:")
+    pp.pprint(traditional_answer)
+    
