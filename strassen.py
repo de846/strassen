@@ -206,4 +206,3 @@ if __name__ == "__main__":
     pp.pprint(strassen_answer)
     print("\nTraditional Product:")
     pp.pprint(traditional_answer)
-    
