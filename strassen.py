@@ -108,10 +108,10 @@ def matrix_merge(a,b,c,d):
     return result
 
 def strassen_solution(a,b):
-    row_len_a = len(a[1][:])
-    col_len_a = len(a[:][1])
-    row_len_b = len(b[1][:])
-    col_len_b = len(b[:][1])
+    row_len_a = len(a[0][:])
+    col_len_a = len(a[:][0])
+    row_len_b = len(b[0][:])
+    col_len_b = len(b[:][0])
 
     """
     Checking condition for whether the rows and columns satisfy the condition to be split into 4 equal quarters.
@@ -137,7 +137,7 @@ def strassen_solution(a,b):
         the product is a 2D array. This ensures easy merging with the merge function
         """
 
-        if row_len_a > 2:
+        if row_len_a > 2 :
             p1 = strassen_solution(a11,s1)
         else:
             p1 = matrix_product(a11,s1)
@@ -180,6 +180,10 @@ def strassen_solution(a,b):
 
         return matrix_merge(c11,c12,c21,c22)
 
+    else:
+        c = matrix_product(a,b)
+        return c
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Strassen Matrix Multiplier")
@@ -187,9 +191,9 @@ if __name__ == "__main__":
     args = parser.parse_args()
     size = args.size
 
-    if math.log(size, 2) % 1 != 0:
-        print("Matrix needs to be a power of 2")
-        raise SystemExit
+    # if math.log(size, 2) % 1 != 0:
+    #     print("Matrix needs to be a power of 2")
+    #     raise SystemExit
 
     m1 = create_matrix(size)
     m2 = create_matrix(size)
