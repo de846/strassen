@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 import numpy
 import math
-import pprint as pp 
+import pprint as pp
+import argparse
 
 def create_matrix(m):
     """Function to create a random matrix in which values range from 1 to 20"""
@@ -11,8 +12,8 @@ def create_matrix(m):
 def split_matrix(m):
     """Function to split the matrix into 4 equal quarters"""
 
-    row_len = len(m[0][:])
-    col_len = len(m[:][0])
+    row_len = int(len(m[0][:]))
+    col_len = int(len(m[:][0]))
     if row_len == col_len and row_len % 2 == 0:
         a = [[0 for i in range(row_len/2)] for j in range(col_len/2)]
         b = [[0 for i in range(row_len/2)] for j in range(col_len/2)]
@@ -178,27 +179,25 @@ def strassen_solution(a,b):
         return matrix_merge(c11,c12,c21,c22)
 
 
-m1 = create_matrix(8)
-m2 = create_matrix(8)
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Strassen Matrix Multiplier")
+    parser.add_argument('-s', '--size', help='Size of the matrix', default=2, type=int)
+    args = parser.parse_args()
+    size = args.size
 
-pp.pprint(m1)
-pp.pprint(m2)
+    if math.log(size, 2) % 1 != 0:
+        print("Matrix needs to be a power of 2")
+        raise SystemExit
 
-answer = strassen_solution(m1,m2)
+    m1 = create_matrix(size)
+    m2 = create_matrix(size)
 
-answer2 = matrix_product(m1,m2)
+    pp.pprint(m1)
+    pp.pprint(m2)
 
-pp.pprint(answer)
-pp.pprint(answer2)
+    answer = strassen_solution(m1,m2)
 
+    answer2 = matrix_product(m1,m2)
 
-# if __name__ == "__main__":
-#     parser = argparse.ArgumentParser(description="Strassen Matrix Multiplier")
-#     parser.add_argument('-s', '--size', help='Size of the matrix', default=2, type=int)
-#     # parser.add_argument('-v', '--verbose', action='store_true', help='Show moves')
-#     args = parser.parse_args()
-#     size = args.size
-
-#     if math.log(size, 2) % 1 != 0:
-#         print("Matrix needs to be a power of 2")
-#         raise SystemExit
+    pp.pprint(answer)
+    pp.pprint(answer2)
